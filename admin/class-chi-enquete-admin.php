@@ -76,8 +76,13 @@ class Chi_Enquete_Admin {
 
 
         wp_enqueue_script($this->plugin_name, plugin_dir_url(__DIR__) . 'lib/Chart.min.js', array('jquery'), $this->version, false);
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/chi-enquete-admin.js', array( 'jquery' ), $this->version, false );
-
+		wp_enqueue_script( $this->plugin_name.'a', plugin_dir_url( __FILE__ ) . 'js/chi-enquete-admin.js', array( 'jquery' ), $this->version, false );
+        $title_nonce = wp_create_nonce('chi_enquete_admin');
+        wp_localize_script('chi-enquete', 'chi_enquete_backend_ajax_obj', array(
+            'ajax_url' => admin_url('admin-ajax.php'),
+            'action' => 'chi_enquete_admin',
+            'nonce' => $title_nonce,
+        ));
 	}
 
     public function my_admin_menu() {
@@ -233,7 +238,50 @@ class Chi_Enquete_Admin {
         );
     }
 
+    public function query_survey_ajax_handler() {
+        /** @noinspection PhpIncludeInspection */
+        require_once plugin_dir_path(dirname(__FILE__)) . 'admin/chi-survey-backend.php';
+        check_ajax_referer('chi_enquete_admin');
 
+        if (array_key_exists( 'method',$_POST) && $_POST['method'] == 'stats') {
+            try {
+                $stats = ChiSurveyBackend::get_stats_array();
+                wp_send_json(['is_valid' => true, 'data' => $stats, 'action' => 'stats']);
+                die();
+            } catch (Exception $e) {
+                wp_send_json(['is_valid' => false, 'message' => $e->getMessage(), 'trace'=>$e->getTrace(), 'action' => 'stats' ]);
+                die();
+            }
+
+        } elseif (array_key_exists( 'method',$_POST) && $_POST['method'] == 'list') {
+
+            try {
+
+                $query = ChiSurveyBackend::do_query_from_post();
+                wp_send_json(['is_valid' => true, 'data' => $query, 'action' => 'list']);
+                die();
+            } catch (Exception $e) {
+                wp_send_json(['is_valid' => false, 'message' => $e->getMessage(), 'trace'=>$e->getTrace(), 'action' => 'list' ]);
+                die();
+            }
+
+        } elseif (array_key_exists( 'method',$_POST) && $_POST['method'] == 'detail') {
+
+            try {
+                $detail = ChiSurveyBackend::get_details_of_one(intval($_POST['id']));
+                wp_send_json(['is_valid' => true, 'data' => $detail, 'action' => 'detail']);
+                die();
+            } catch (Exception $e) {
+                wp_send_json(['is_valid' => false, 'message' => $e->getMessage(), 'trace'=>$e->getTrace(), 'action' => 'detail' ]);
+                die();
+            }
+
+        } else {
+            //unrecognized
+            wp_send_json(['is_valid' => false, 'message' => "unknown action"]);
+            die();
+        }
+    }
 
 
 

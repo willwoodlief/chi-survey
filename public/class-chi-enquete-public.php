@@ -81,7 +81,7 @@ class Chi_Enquete_Public
         wp_enqueue_script($this->plugin_name, plugin_dir_url(__DIR__) . 'lib/Chart.min.js', array('jquery'), $this->version, false);
         wp_enqueue_script($this->plugin_name. 'a', plugin_dir_url(__FILE__) . 'js/chi-enquete-public.js', array('jquery'), $this->version, false);
         $title_nonce = wp_create_nonce('chi_enquete_chart');
-        wp_localize_script('chi-enquete', 'chart_ajax_obj', array(
+        wp_localize_script('chi-enquete', 'chi_enquete_chart_ajax_obj', array(
             'ajax_url' => admin_url('admin-ajax.php'),
             'action' => 'chi_enquete_submit_chart_step',
             'nonce' => $title_nonce,

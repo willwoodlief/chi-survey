@@ -5,8 +5,8 @@ jQuery(document).ready(function( $ ) {
 
         validate();
         var outvars = {};
-        outvars._ajax_nonce =  chart_ajax_obj.nonce;
-        outvars.action = chart_ajax_obj.action;
+        outvars._ajax_nonce =  chi_enquete_chart_ajax_obj.nonce;
+        outvars.action = chi_enquete_chart_ajax_obj.action;
 
         outvars.state = "start";
         var state_info = $(".chi-enquete-state-info:last");
@@ -51,7 +51,7 @@ jQuery(document).ready(function( $ ) {
         $.ajax({
             type: 'POST',
             dataType: "json",
-            url: chart_ajax_obj.ajax_url,
+            url: chi_enquete_chart_ajax_obj.ajax_url,
             data: outvars,
             success: success_handler,
             error: error_handler
