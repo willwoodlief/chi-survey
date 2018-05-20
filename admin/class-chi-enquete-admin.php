@@ -61,17 +61,7 @@ class Chi_Enquete_Admin {
 	 */
 	public function enqueue_styles() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Chi_Enquete_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Chi_Enquete_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
+
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/chi-enquete-admin.css', array(), $this->version, 'all' );
 
@@ -84,18 +74,8 @@ class Chi_Enquete_Admin {
 	 */
 	public function enqueue_scripts() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Chi_Enquete_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Chi_Enquete_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
 
+        wp_enqueue_script($this->plugin_name, plugin_dir_url(__DIR__) . 'lib/Chart.min.js', array('jquery'), $this->version, false);
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/chi-enquete-admin.js', array( 'jquery' ), $this->version, false );
 
 	}
@@ -111,8 +91,150 @@ class Chi_Enquete_Admin {
      */
     public function create_admin_interface(){
 
+        /** @noinspection PhpIncludeInspection */
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/chi-enquete-admin-display.php';
 
     }
+
+    public function add_settings() {
+
+        // register a new section in the "reading" page
+        add_settings_section(
+            'chi_enquete_settings_section',
+            'Chi Enquete Settings Section',
+            function() {
+                echo '<p>Chi Enquete  Section Introduction.</p>';
+            },
+            'reading'
+        );
+
+
+        // register settings  for "reading" page
+        $args = array(
+            'type' => 'string',
+            'sanitize_callback' => null,
+            'default' => '',
+        );
+
+        $args['default'] = "Vitacheck section, customize me at admin settings reading page";
+        //for vitacheck header
+        register_setting('reading', 'chi_enquete_vitacheck_text',$args);
+
+
+        // register vitacheck field in the "chi_enquete_settings_section" section, inside the "reading" page
+        add_settings_field(
+            'chi_enquete_vitacheck_text',
+            'Vitacheck Header HTML',
+            function() {
+                // get the value of the setting we've registered with register_setting()
+                $setting = get_option('chi_enquete_vitacheck_text');
+                // output the field
+                ?>
+                <label>
+                    <textarea name="chi_enquete_vitacheck_text" cols="60" rows="10"> <?=$setting ?></textarea>
+                </label>
+                <?php
+            },
+            'reading',
+            'chi_enquete_settings_section'
+        );
+
+        $args['default'] = "Psychologische section, customize me at admin settings reading page";
+        //for psychologische header
+        register_setting('reading', 'chi_enquete_psychologische_text',$args);
+
+
+        // register psychologische field in the "chi_enquete_settings_section" section, inside the "reading" page
+        add_settings_field(
+            'chi_enquete_psychologische_text',
+            'Psychologische Header HTML',
+            function() {
+                // get the value of the setting we've registered with register_setting()
+                $setting = get_option('chi_enquete_psychologische_text');
+                // output the field
+                ?>
+                <label>
+                    <textarea name="chi_enquete_psychologische_text" cols="60" rows="10"> <?=$setting ?></textarea>
+                </label>
+                <?php
+            },
+            'reading',
+            'chi_enquete_settings_section'
+        );
+
+        $args['default'] = "Intro Text, customize me at admin settings reading page";
+        //for start header
+        register_setting('reading', 'chi_enquete_start_text',$args);
+
+
+        // register start field in the "chi_enquete_settings_section" section, inside the "reading" page
+        add_settings_field(
+            'chi_enquete_start_text',
+            'Start Header HTML',
+            function() {
+                // get the value of the setting we've registered with register_setting()
+                $setting = get_option('chi_enquete_start_text');
+                // output the field
+                ?>
+                <label>
+                    <textarea name="chi_enquete_start_text" cols="60" rows="10"> <?=$setting ?></textarea>
+                </label>
+                <?php
+            },
+            'reading',
+            'chi_enquete_settings_section'
+        );
+
+        $args['default'] = "Not Found Text, customize me at admin settings reading page";
+        //for not found text header
+        register_setting('reading', 'chi_enquete_not_found_text',$args);
+
+
+        // register not found field in the "chi_enquete_settings_section" section, inside the "reading" page
+        add_settings_field(
+            'chi_enquete_not_found_text',
+            'Not Found HTML',
+            function() {
+                // get the value of the setting we've registered with register_setting()
+                $setting = get_option('chi_enquete_not_found_text');
+                // output the field
+                ?>
+                <label>
+                    <textarea name="chi_enquete_not_found_text" cols="60" rows="10"> <?=$setting ?></textarea>
+                </label>
+                <?php
+            },
+            'reading',
+            'chi_enquete_settings_section'
+        );
+
+
+        $args['default'] = "Finished Chart Text, customize me at admin settings reading page";
+        //for not found text header
+        register_setting('reading', 'chi_enquete_finished_chart',$args);
+
+
+        // register not found field in the "chi_enquete_settings_section" section, inside the "reading" page
+        add_settings_field(
+            'chi_enquete_finished_chart',
+            'Finished Chart header HTML',
+            function() {
+                // get the value of the setting we've registered with register_setting()
+                $setting = get_option('chi_enquete_finished_chart');
+                // output the field
+                ?>
+                <label>
+                    <textarea name="chi_enquete_finished_chart" cols="60" rows="10"> <?=$setting ?></textarea>
+                </label>
+                <?php
+            },
+            'reading',
+            'chi_enquete_settings_section'
+        );
+    }
+
+
+
+
 
 }

@@ -14,5 +14,6 @@
 ?>
 
 <br>
-<h1>Admin Page! </h1>
+<h1>This page has all the survey results </h1>
+<h2> For The Plugin Settings, see the Chi Enquete Section in the admin reading settings </h2>
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->

@@ -1,5 +1,5 @@
 <?php
- global $chi_enquete_custom_header;
+
 
 /**
  * Provide a public-facing view for the plugin
@@ -12,12 +12,65 @@
  * @package    Chi_Enquete
  * @subpackage Chi_Enquete/public/partials
  */
+global $survey_obj;
+$text = get_option('chi_enquete_finished_chart');
 ?>
 
-<div class="chi-enquete">
-    <h2> Chart Title </h2>
-    <div class='custom-header'> <?= $chi_enquete_custom_header ?></div>
 
+<div class="chi-enquete-chart">
+    <h2> Code <?= $survey_obj->key ?> </h2>
+    <div>
+        <?= $text ?>
+    </div>
 
-    <button id='submit-results'> Submit Results </button>
+    <div class="chartjs-wrapper">
+        <canvas id="chartjs-3" class="chartjs" width="undefined" height="undefined"></canvas>
+        <script>
+            new Chart(document.getElementById("chartjs-3"),
+                {
+                    type: "radar",
+                    data:
+                        {
+                            labels: ["Autonomie", "Competentie", "Sociale Verbondenheid", "Fysieke Vrijheid", "Emotioneel Welbevinden", "Energie" ],
+                            datasets: [
+                                {
+                                    label: "<?= $survey_obj->key ?>",
+                                    data: [
+                                        <?= $survey_obj->autonomie ?>,
+                                        <?= $survey_obj->competentie ?>,
+                                        <?= $survey_obj->sociale_verbondenheid ?>,
+                                        <?= $survey_obj->fysieke_vrijheid ?>,
+                                        <?= $survey_obj->emotioneel_welbevinden ?>,
+                                        <?= $survey_obj->energie ?>
+                                    ],
+                                    fill: true,
+                                    backgroundColor: "rgba(54, 162, 235, 0.2)",
+                                    borderColor: "rgb(54, 162, 235)",
+                                    pointBackgroundColor: "rgb(54, 162, 235)",
+                                    pointBorderColor: "#fff",
+                                    pointHoverBackgroundColor: "#fff",
+                                    pointHoverBorderColor: "rgb(54, 162, 235)"
+                                }
+
+                            ]
+                        },
+                    options:
+                        {
+                            elements:
+                                {
+                                    line:
+                                        {
+                                            "tension": 0,
+                                            "borderWidth": 3
+                                        }
+                                },
+                            scale: {
+                                ticks: {
+                                    min: 0
+                                }
+                            }
+                        }
+                });
+        </script>
+    </div>
 </div>

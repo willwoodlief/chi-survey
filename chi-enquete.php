@@ -51,7 +51,7 @@ function chi_enquete_update_db_check() {
     require_once plugin_dir_path( __FILE__ ) . 'includes/class-chi-enquete-activator.php';
     $version = get_site_option( '_chi_enquete_db_version' );
     if ( $version != Chi_Enquete_Activator::DB_VERSION ) {
-        Chi_Enquete_Activator::db_update();
+        //do nothing right now, keep db unchanged unless manual deletion first
     }
 }
 

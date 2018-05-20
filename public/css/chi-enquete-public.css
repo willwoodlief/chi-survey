@@ -4,5 +4,74 @@
  */
 
 .chi-enquete {
+    border: black solid 1px;
+    padding: 1em;
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
 
+.chi-enquete div.chi-enquete-html{
+    margin-bottom: 1em;
+}
+
+.chi-enquete .chi-enquete-custom-header {
+    margin-bottom: 1em;
+}
+
+.chi-enquete .chi-enquete-customized-header {
+    margin-bottom: 1em;
+}
+
+.chi-enquete .chi-enquete-questions-list {
+    font-size: 100%;
+}
+
+.chi-enquete .chi-enquete-question-block {
+
+}
+
+.chi-enquete .chi-enquete-question {
+    font-weight: bold;
+}
+
+.chi-enquete fieldset.chi-error {
+    border: red solid 1px;
+}
+
+.chi-enquete .chi-enquete-question-block .chi-enquete-question-number {
+    font-style: italic;
+    border-radius: 50%;
+    padding: 0.20em;
+    min-width: 2em;
+    background-color: rgba(14, 19, 255, 0.22);
+    display: inline-block;
+    text-align: center;
+}
+
+.chi-enquete .chi-enquete-question-bloc fieldset {
+    padding: 0;
+}
+
+.chi-enquete .chi-enquete-question-block .chi-enquete-actual-question {
+
+}
+
+.chi-enquete .chi-enquete-question-block .chi-enquete-answer-line {
+
+}
+
+.chi-enquete .chi-enquete-question-block .chi-enquete-radio:not(:first-child) {
+
+}
+
+.chi-enquete .chi-enquete-question-block .chi-enquete-radio-label {
+    display: inline-block;
+}
+
+.chi-enquete .chi-enquete-question-block .chi-enquete-radio-and-label {
+    display: inline-block;
+}
+
+.chi-enquete .chi-enquete-question-block .chi-enquete-radio-and-label:not(:first-child) {
+    margin-left: 2em;
 }
