@@ -2,3 +2,90 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
+
+div.chi-enquete-admin {
+    margin-top: 1em;
+}
+
+div.chi-enquete-admin div.chi-enquete-table {
+    width: 780px;
+    height: 700px;
+    display: inline-block;
+}
+
+div.chi-enquete-admin div.chi-enquete-detail {
+    width: 400px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+div.chi-enquete-admin div.chi-enquete-detail div.chi-enquete-stats {
+    width: 100%;
+    padding: 0.5em;
+    border: black dashed 1px;
+}
+
+div.chi-enquete-admin thead td {
+    font-weight: bold;
+}
+
+div.chi-enquete-admin div.chi-enquete-stats tr  td:not(:first-child) {
+    text-align: center;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+}
+
+div.chi-enquete-admin div.chi-enquete-stats tr  td:first-child {
+    font-weight: 500;
+    font-style: italic;
+}
+
+div.chi-enquete-admin table.chi-enquete-raw-detail tr  td {
+    text-align: center;
+}
+div.chi-enquete-admin table.chi-enquete-raw-detail tr  td:first-child,
+div.chi-enquete-admin table.chi-enquete-raw-detail tr  td:nth-child(4){
+    font-weight: 500;
+    font-style: italic;
+    text-align: left;
+}
+
+
+
+div.chi-enquete-admin table.chi-enquete-answers span.chi-question-number {
+    font-style: italic;
+    border-radius: 50%;
+    padding: 0.20em;
+    min-width: 2em;
+    background-color: rgba(14, 19, 255, 0.22);
+    display: inline-block;
+    text-align: center;
+}
+
+div.chi-enquete-admin table.chi-enquete-answers span.chi-question-text {
+    font-style: italic;
+    text-align: left;
+}
+
+div.chi-enquete-admin table.chi-enquete-answers span.chi-answer {
+    font-weight: 500;
+    margin-right: 1em;
+}
+
+div.chi-enquete-admin table.chi-enquete-answers span.chi-promt {
+    font-style: italic;
+    text-align: left;
+}
+
+div.chi-enquete-admin table.chi-enquete-answers tr  td:first-child {
+    width: 50%;
+}
+
+div.chi-enquete-admin tr:nth-child(even) {background: #CCC}
+div.chi-enquete-admin tr:nth-child(odd) {background: #FFF}
+
+div.chi-enquete-admin div.chi-enquete-detail div.chi-enquete-details-here {
+    min-height: 4em;
+    padding: 0.5em;
+
+}

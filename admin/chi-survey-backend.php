@@ -13,14 +13,13 @@ class ChiSurveyBackend
         $res = $wpdb->get_results(
             " 
             select count(id) number_completed,
-              min(autonomie) as min_autonomie, max(autonomie) as max_autonomie,avg(autonomie) as avg_autonomie,
-              min(competentie) as min_competentie, max(competentie) as max_competentie,avg(competentie) as avg_competentie,
-              min(sociale_verbondenheid) as min_sociale_verbondenheid, max(sociale_verbondenheid) as max_sociale_verbondenheid,avg(sociale_verbondenheid) as avg_sociale_verbondenheid,
-              min(fysieke_vrijheid) as min_fysieke_vrijheid, max(fysieke_vrijheid) as max_fysieke_vrijheid,avg(fysieke_vrijheid) as avg_fysieke_vrijheid,
-              min(autonomie) as min_autonomie, max(autonomie) as max_autonomie,avg(autonomie) as avg_autonomie,
-              min(emotioneel_welbevinden) as min_emotioneel_welbevinden, max(emotioneel_welbevinden) as max_emotioneel_welbevinden,avg(emotioneel_welbevinden) as avg_emotioneel_welbevinden,
-              min(created_at) as min_created_at, max(created_at) as max_created_at,
-              min(energie) as min_energie, max(energie) as max_energie,avg(energie) as avg_energie
+round(min(autonomie),2) as min_autonomie, round(max(autonomie),2) as max_autonomie,round(avg(autonomie),2) as avg_autonomie,
+round(min(competentie),2) as min_competentie, round(max(competentie),2) as max_competentie,round(avg(competentie),2) as avg_competentie,
+round(min(sociale_verbondenheid),2) as min_sociale_verbondenheid, round(max(sociale_verbondenheid),2) as max_sociale_verbondenheid,round(avg(sociale_verbondenheid),2) as avg_sociale_verbondenheid,
+round(min(fysieke_vrijheid),2) as min_fysieke_vrijheid,round( max(fysieke_vrijheid),2) as max_fysieke_vrijheid,round(avg(fysieke_vrijheid),2) as avg_fysieke_vrijheid,
+round(min(emotioneel_welbevinden),2) as min_emotioneel_welbevinden,round( max(emotioneel_welbevinden),2) as max_emotioneel_welbevinden,round(avg(emotioneel_welbevinden),2) as avg_emotioneel_welbevinden,
+round( min(energie),2) as min_energie, round(max(energie),2) as max_energie, round(avg(energie),2) as avg_energie,
+min(UNIX_TIMESTAMP(created_at)) as min_created_at_ts, max(UNIX_TIMESTAMP(created_at)) as max_created_at_ts
             from $table_name where is_completed = 1;
             ");
 
@@ -98,7 +97,7 @@ class ChiSurveyBackend
             }
         }
 
-        $sort_by_clause = " sort by id asc";
+        $sort_by_clause = " order by id asc";
         $sort_by = trim($sort_by);
         $sort_direction = intval($sort_direction);
         if ($sort_by) {
@@ -142,7 +141,8 @@ class ChiSurveyBackend
         $res = $wpdb->get_results( /** @lang text */
                             "
                 select id,autonomie,competentie,sociale_verbondenheid,fysieke_vrijheid,
-                  emotioneel_welbevinden,energie,created_at,anon_key,dob
+                  emotioneel_welbevinden,energie,created_at,anon_key,dob, UNIX_TIMESTAMP(dob) as dob_ts,
+                  UNIX_TIMESTAMP(created_at) as created_at_ts
                 from $table_name where ( is_completed = 1 ) 
                 $where_clause $sort_by_clause  $offset_clause;"
         );
@@ -177,7 +177,7 @@ class ChiSurveyBackend
 
         /** @noinspection SqlResolve */
         $survey_res = $wpdb->get_results("
-        select id,anon_key,dob,created_at,is_completed,sub_emotioneel_raw,
+        select id,anon_key,dob,created_at,is_completed,sub_emotioneel_raw,sub_fysieke_raw,sub_energie_raw,
           sub_fysieke_final,sub_emotioneel_final,sub_energie_final,sub_autonomie,sub_binding,sub_competentie,
           autonomie,competentie,sociale_verbondenheid,fysieke_vrijheid,emotioneel_welbevinden,energie
         from $survey_table_name where id = $survey_id;

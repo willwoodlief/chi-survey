@@ -61,9 +61,17 @@ class Chi_Enquete_Admin {
 	 */
 	public function enqueue_styles() {
 
+        $b_check = strpos($_SERVER['QUERY_STRING'], 'chi-enquete');
+        if ($b_check !== false) {
 
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/chi-enquete-admin.css', array(), $this->version, 'all' );
+
+            wp_enqueue_style( $this->plugin_name.'slick', plugin_dir_url( __DIR__ ) . 'lib/SlickGrid/slick.grid.css', array(), $this->version, 'all' );
+         //   wp_enqueue_style( $this->plugin_name.'slickuismooth', plugin_dir_url( __DIR__ ) . 'lib/SlickGrid/css/smoothness/jquery-ui-1.11.3.custom.css', array(), $this->version, 'all' );
+            wp_enqueue_style( $this->plugin_name.'slickexamps', plugin_dir_url( __DIR__ ) . 'lib/SlickGrid/css/working.css', array(), $this->version, 'all' );
+            wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/chi-enquete-admin.css', array(), $this->version, 'all' );
+        }
+
 
 	}
 
@@ -75,14 +83,33 @@ class Chi_Enquete_Admin {
 	public function enqueue_scripts() {
 
 
-        wp_enqueue_script($this->plugin_name, plugin_dir_url(__DIR__) . 'lib/Chart.min.js', array('jquery'), $this->version, false);
-		wp_enqueue_script( $this->plugin_name.'a', plugin_dir_url( __FILE__ ) . 'js/chi-enquete-admin.js', array( 'jquery' ), $this->version, false );
-        $title_nonce = wp_create_nonce('chi_enquete_admin');
-        wp_localize_script('chi-enquete', 'chi_enquete_backend_ajax_obj', array(
-            'ajax_url' => admin_url('admin-ajax.php'),
-            'action' => 'chi_enquete_admin',
-            'nonce' => $title_nonce,
-        ));
+        $b_check = strpos($_SERVER['QUERY_STRING'], 'chi-enquete');
+
+
+        if ($b_check !== false) {
+
+
+          //  wp_enqueue_script($this->plugin_name.'slickcorejqui', plugin_dir_url(__DIR__) . 'lib/SlickGrid/lib/jquery-ui-1.11.3.js', array('jquery'), $this->version, false);
+
+            wp_enqueue_script($this->plugin_name.'slickcoredrag', plugin_dir_url(__DIR__) . 'lib/SlickGrid/lib/jquery.event.drag-2.3.0.js', array('jquery'), $this->version, false);
+            wp_enqueue_script($this->plugin_name.'slickcorejsonp', plugin_dir_url(__DIR__) . 'lib/SlickGrid/lib/jquery.jsonp-2.4.min.js', array('jquery'), $this->version, false);
+            wp_enqueue_script($this->plugin_name.'slickcore', plugin_dir_url(__DIR__) . 'lib/SlickGrid/slick.core.js', array('jquery'), $this->version, false);
+            wp_enqueue_script( $this->plugin_name.'a', plugin_dir_url( __FILE__ ) . 'js/chi-enquete-admin.js', array( 'jquery' ), $this->version, false );
+            wp_enqueue_script($this->plugin_name.'slickgrid', plugin_dir_url(__DIR__) . 'lib/SlickGrid/slick.grid.js', array('jquery'), $this->version, false);
+            wp_enqueue_script($this->plugin_name.'slicksel', plugin_dir_url(__DIR__) . 'lib/SlickGrid/plugins/slick.rowselectionmodel.js', array('jquery'), $this->version, false);
+
+
+
+            wp_enqueue_script($this->plugin_name, plugin_dir_url(__DIR__) . 'lib/Chart.min.js', array('jquery'), $this->version, false);
+
+            $title_nonce = wp_create_nonce('chi_enquete_admin');
+            wp_localize_script('chi-enquete', 'chi_enquete_backend_ajax_obj', array(
+                'ajax_url' => admin_url('admin-ajax.php'),
+                'action' => 'chi_enquete_admin',
+                'nonce' => $title_nonce,
+            ));
+        }
+
 	}
 
     public function my_admin_menu() {
@@ -240,6 +267,7 @@ class Chi_Enquete_Admin {
 
     public function query_survey_ajax_handler() {
         /** @noinspection PhpIncludeInspection */
+        global $chi_enquete_list_survey_obj;
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/chi-survey-backend.php';
         check_ajax_referer('chi_enquete_admin');
 
@@ -257,8 +285,8 @@ class Chi_Enquete_Admin {
 
             try {
 
-                $query = ChiSurveyBackend::do_query_from_post();
-                wp_send_json(['is_valid' => true, 'data' => $query, 'action' => 'list']);
+                $chi_enquete_list_survey_obj = ChiSurveyBackend::do_query_from_post();
+                wp_send_json(['is_valid' => true, 'data' => $chi_enquete_list_survey_obj, 'action' => 'list']);
                 die();
             } catch (Exception $e) {
                 wp_send_json(['is_valid' => false, 'message' => $e->getMessage(), 'trace'=>$e->getTrace(), 'action' => 'list' ]);
@@ -266,10 +294,15 @@ class Chi_Enquete_Admin {
             }
 
         } elseif (array_key_exists( 'method',$_POST) && $_POST['method'] == 'detail') {
-
+                global $chi_enquete_details_object;
             try {
-                $detail = ChiSurveyBackend::get_details_of_one(intval($_POST['id']));
-                wp_send_json(['is_valid' => true, 'data' => $detail, 'action' => 'detail']);
+                $chi_enquete_details_object = ChiSurveyBackend::get_details_of_one(intval($_POST['id']));
+                ob_start();
+                require_once plugin_dir_path(dirname(__FILE__)) . 'admin/partials/chi-enquete-admin-detail.php';
+                $html = ob_get_contents();
+                ob_end_clean();
+                $chi_enquete_details_object['html'] = $html;
+                wp_send_json(['is_valid' => true, 'data' => $chi_enquete_details_object, 'action' => 'detail']);
                 die();
             } catch (Exception $e) {
                 wp_send_json(['is_valid' => false, 'message' => $e->getMessage(), 'trace'=>$e->getTrace(), 'action' => 'detail' ]);

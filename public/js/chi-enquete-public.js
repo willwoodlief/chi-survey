@@ -66,6 +66,8 @@ jQuery(document).ready(function( $ ) {
                     case 'survey_page':
                     case 'end_survey':
                         $(".chi-enquete-html").html(data.html);
+                        let top_pos = jQuery("div.chi-enquete-custom-header").offset().top;
+                        jQuery(document).scrollTop(top_pos);
                         $('.chi-enquete .chi-enquete-radio').on('click', function() {
                             $(this).closest('fieldset').removeClass('chi-error') ;
                         });
@@ -132,6 +134,11 @@ jQuery(document).ready(function( $ ) {
                     $(item).removeClass('chi-error');
                 }
             });
+             if (count > 0) {
+                 let top_pos = jQuery(".chi-error:first").offset().top - 80;
+                 jQuery(document).scrollTop(top_pos);
+             }
+
             return (count > 0) ? false : true;
         };
     });
