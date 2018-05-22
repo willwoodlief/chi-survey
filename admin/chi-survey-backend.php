@@ -234,6 +234,7 @@ min(UNIX_TIMESTAMP(created_at)) as min_created_at_ts, max(UNIX_TIMESTAMP(created
             //get the number associated with this, it will be (%d) at the end, strip it out and turn it into an integer
             preg_match("/(?P<question>.*)\((?P<value>\d)\)\s*$/", $raw_answer, $output_array);
             if (empty($output_array)) { continue;}
+            if (0 ==$output_array['value']) {continue;}
             $answer_hash[intval($output_array['value'])] = $output_array['question'];
 
         }

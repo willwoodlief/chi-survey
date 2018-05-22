@@ -109,6 +109,7 @@ class ChiSurvey
             //get the number associated with this, it will be (%d) at the end, strip it out and turn it into an integer
             preg_match("/(?P<question>.*)\((?P<value>\d)\)\s*$/", $raw_answer, $output_array);
             if (empty($output_array)) { continue;}
+            if (0 ==$output_array['value']) {continue;}
             $node = ['text'=>$output_array['question'], 'value' => $output_array['value']];
             array_push($answer_array,$node);
         }
