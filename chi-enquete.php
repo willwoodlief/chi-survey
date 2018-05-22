@@ -14,11 +14,11 @@
  *
  * @wordpress-plugin
  * Plugin Name:       Chi's Vitality Survey Chart
- * Plugin URI:        http://example.com/chi-enquete-uri/
+ * Plugin URI:        mailto:willwoodlief@gmail.com
  * Description:       Offers a survey and generates a chart
- * Version:           1.0.0
- * Author:            Your Name or Your Company
- * Author URI:        http://example.com/
+ * Version:           1.0.1
+ * Author:            Will Woodlief (for clchiu)
+ * Author URI:        willwoodlief@gmail.com
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       chi-enquete
@@ -36,7 +36,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'PLUGIN_NAME_VERSION', '1.0.0' );
+define( 'PLUGIN_NAME_VERSION', '1.0.1' );
 
 /**
  * The code that runs during plugin activation.
